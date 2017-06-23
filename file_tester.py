@@ -48,12 +48,13 @@ def convert_to_wav_format(file):
         song=AudioSegment.from_file(file,"mp3")
         song=song[:30000]
         song.export(file+"wav",format="wav")
-    return path+"wav"
+    path=file+"wav"
+    return path
 
 
 def test_model_on_single_file(file_path):
     clf = joblib.load('C:\\Users\\hp\\Desktop\\project\\neurallbfgsdata.rar')
-    X, y = read_fftx_test(create_fftx_test(file_path)+".npy")
+    X, y = read_fftx_test(create_fftx_test(convert_to_wav_file(file_path))+".npy")
     probs = clf.predict_proba(X)
     print ("\t".join(str(x) for x in genre_list))
     print ("\t".join(str("%.3f" % x) for x in probs[0]))
@@ -74,5 +75,5 @@ if __name__ == "__main__":
     print(genre_list)
 
     test = input("Enter the song's name ")
-    test_file="C:\\Users\\hp\\Desktop\\project\\testfiles\\"+test+".wav"
+    test_file="C:\\Users\\hp\\Desktop\\project\\testfiles\\"+test+".mp3"
     predicted_genre = test_model_on_single_file(test_file)
